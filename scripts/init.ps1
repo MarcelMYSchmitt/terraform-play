@@ -1,5 +1,5 @@
-$TERRAFORM_STORAGE_NAME=terraformstorage$ENVTAG
-$TERRAFORM_RG_NAME=terraform-$SHORT_REGION-$ENVTAG-rg
+$TERRAFORM_STORAGE_NAME=terraformstorage$PROJECTTAG+$ENVTAG
+$TERRAFORM_RG_NAME=terraform-$PROJECTTAG-$SHORT_REGION-$ENVTAG-rg
 
 Write-Host "Login to Azure..."
 az login --service-principal -u $APP_CLIENT_ID -p $APP_CLIENT_SECRET --tenant $TENANT_ID

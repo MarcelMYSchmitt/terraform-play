@@ -1,0 +1,14 @@
+version: "3.2"
+
+services:
+  terraform-play:
+    image: mrmyiagi/terraform
+    container_name: terraform
+    build: 
+      context: .
+      Dockerfile: Dockerfile
+    restart: never
+    volumes:
+      - ./scripts:/usr/src/terraform
+    env_file:
+      - terraform.env    

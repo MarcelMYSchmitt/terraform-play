@@ -1,6 +1,5 @@
 locals {
-  keyvault_name = "terraform-${var.short_region}-${var.env_tag}-kv"
-  resource_group_name = "terraform-${var.short_region}-${var.env_tag}-rg"
+  keyvault_name = "${var.project_tag}-${var.short_region}-${var.env_tag}-kv"
 }
 
 data "azurerm_client_config" "client" {
@@ -9,7 +8,7 @@ data "azurerm_client_config" "client" {
 resource "azurerm_key_vault" "keyvault" {
   name                        = local.keyvault_name
   location                    = var.long_region
-  resource_group_name         = local.resource_group_name
+  resource_group_name         = azurerm_resource_group.rg.name
   enabled_for_disk_encryption = true
   tenant_id                   = var.tenant_id
   sku_name                    = "standard"

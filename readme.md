@@ -1,6 +1,6 @@
 # Introduction
 
-Some example scripts how to setup Infrastructe as Code by using terrafrom on Microsot Azure.
+Some example scripts how to setup Infrastructe as Code by using terrafrom on Microsot Azure. There are different ways to realize the infrastructure creation. In the following example we will create a Service Principal and assign it on Subscription Level. You could also assign it on Resource Group level. It depends on how much automation you want to have. Here, we want to create everything automatically. We want to have a resource group for the terraform storage/state and also a resource group where we are going to create our custom resources. 
 
 <br /> 
 
@@ -14,6 +14,12 @@ Some example scripts how to setup Infrastructe as Code by using terrafrom on Mic
 3. Create a new client secret
 4. Please note your client id and client secret
 5. Please note also your tenant id and subscription id
+6. Go to your subscription
+7. Click on `Access control (IAM)`
+8. Click on `Add` and `Add role assignment`
+9. Choose `Owner` or `Contributor` in Tab `Role`.
+10. Choose your app registration in Tab `Members`
+11. Review and assign your app registration with the chosen role to your subscription.
 
 <br /> 
 
@@ -26,11 +32,11 @@ Some example scripts how to setup Infrastructe as Code by using terrafrom on Mic
 <br /> 
 
 We will create following resources in Azure. 
-1. Resource Group where we are going to place everything
-2. Storage account with container, where we are going to store the state of the deployment
-3. Azure Key Vault for Storing Secrets
-4. Azure Container Registry for storing docker images
-5. We are going to store the container access key in the key vault.
+1. One resource group where we are going to place our terraform state inside a storage account
+2. Another resource groupt where we ware going to store following resources: 
+   -  Azure Key Vault for Storing Secrets
+   - Azure Container Registry for storing docker images
+   - We are going to store the container access key in the key vault.
 
 We will have some specific naming convention where we are going to use the environment like `dev`, the region like `we` or the resource as short name like `rg` in our scripts. We will see them later in the Azure portal.  
 
