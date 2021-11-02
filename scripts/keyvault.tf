@@ -2,9 +2,6 @@ locals {
   keyvault_name = "${var.project_tag}-${var.short_region}-${var.env_tag}-kv"
 }
 
-data "azurerm_client_config" "client" {
-}
-
 resource "azurerm_key_vault" "keyvault" {
   name                        = local.keyvault_name
   location                    = var.long_region
@@ -13,25 +10,36 @@ resource "azurerm_key_vault" "keyvault" {
   tenant_id                   = var.tenant_id
   sku_name                    = "standard"
 
-  access_policy {
-    tenant_id = var.tenant_id
-    object_id = data.azurerm_client_config.client.service_principal_object_id
+ access_policy {
+    tenant_id = data.azurerm_client_config.current.tenant_id
+    object_id = data.azurerm_client_config.current.object_id
 
-    key_permissions     = ["get", "list", "update", "create", "import", "delete", "recover", "backup", "restore"]
-    secret_permissions  = ["get", "list", "set", "delete", "recover", "backup", "restore"]
-    storage_permissions = ["get", "list", "update", "delete", "recover", "backup", "restore"]
+    
+    key_permissions = [
+      "Get",
+      "Create",
+      "List"
+    ]
+
+    secret_permissions = [
+      "Get",
+      "Set",
+      "List"
+    ]
+
+    storage_permissions = [
+      "Get",
+      "Set",
+      "List"
+    ]
   }
 
   tags = {
-    environment = "Production"
+    "environment" = var.env_tag
+    "project"     = var.project_tag
   }
 }
 
-resource "azurerm_role_assignment" "keyvault_role_assignment" {
-  scope                = azurerm_key_vault.keyvault.id
-  role_definition_name = "Reader"
-  principal_id         = azuread_service_principal.cluster_service_principal.id
-}
 
 resource "azurerm_key_vault_secret" "test_secret" {
   name         = "test-secret"

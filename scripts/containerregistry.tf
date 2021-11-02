@@ -13,3 +13,9 @@ resource "azurerm_container_registry" "acr" {
     "project"     = var.project_tag
   }
 }
+
+resource "azurerm_key_vault_secret" "registry_secret" {
+  name         = azurerm_container_registry.acr.admin_username
+  value        = azurerm_container_registry.acr.admin_password
+  key_vault_id = azurerm_key_vault.keyvault.id
+}
